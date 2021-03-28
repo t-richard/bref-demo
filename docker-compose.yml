@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+  database:
+    image: postgres:12.6-alpine
+    restart: always
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=bref
+      - POSTGRES_USER=bref
+      - POSTGRES_DB=bref
+    volumes:
+      - postgres:/data
+
+volumes:
+  postgres: ~

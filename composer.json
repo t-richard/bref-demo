@@ -9,7 +9,7 @@
     },
     "require": {
         "php": "^7.2.9",
-        "ext-pdo_sqlite": "*",
+        "ext-pdo_pgsql": "*",
         "composer/package-versions-deprecated": "^1.8",
         "doctrine/doctrine-bundle": "^1.12|^2.0",
         "doctrine/doctrine-migrations-bundle": "^3.0",

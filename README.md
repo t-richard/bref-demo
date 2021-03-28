@@ -1,40 +1,30 @@
-Symfony Demo Application
-========================
+Symfony Demo Application with Bref 🚀
+=====================================
 
 The "Symfony Demo Application" is a reference application created to show how
 to develop applications following the [Symfony Best Practices][1].
+
+This is a slightly modified version meant to showcase how to make Symfony run 
+on AWS Lambda with [Bref](https://bref.sh).
 
 Requirements
 ------------
 
   * PHP 7.2.9 or higher;
-  * PDO-SQLite PHP extension enabled;
+  * PDO-PGSQL PHP extension enabled;
+  * docker compose;
   * and the [usual Symfony application requirements][2].
-
-Installation
-------------
-
-[Download Symfony][4] to install the `symfony` binary on your computer and run
-this command:
-
-```bash
-$ symfony new --demo my_project
-```
-
-Alternatively, you can use Composer:
-
-```bash
-$ composer create-project symfony/symfony-demo my_project
-```
 
 Usage
 -----
 
-There's no need to configure anything to run the application. If you have
-[installed Symfony][4] binary, run this command:
+If you have[installed Symfony][4] binary, run these commands:
 
 ```bash
 $ cd my_project/
+$ docker-compose up -d
+$ symfony console doctrine:migration:migrate --no-interaction
+$ symfony console doctrine:fixtures:load --no-interaction
 $ symfony serve
 ```
 
@@ -42,7 +32,7 @@ Then access the application in your browser at the given URL (<https://localhost
 
 If you don't have the Symfony binary installed, run `php -S localhost:8000 -t public/`
 to use the built-in PHP web server or [configure a web server][3] like Nginx or
-Apache to run the application.
+Apache to run the application. Also use `php bin/console` instead of `symfony console`.
 
 Tests
 -----
