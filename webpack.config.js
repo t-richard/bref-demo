@@ -33,4 +33,10 @@ Encore
     })
 ;
 
+if (Encore.isProduction()) {
+  // Note the '/build' at the end of the URL
+  Encore.setPublicPath(`${process.env.S3_BASE_PATH}/build`);
+  Encore.setManifestKeyPrefix('build/')
+}
+
 module.exports = Encore.getWebpackConfig();
