@@ -52,10 +52,10 @@ class Kernel extends BrefKernel
         return ['pools'];
     }
 
-    public function getBuildDir(): string
-    {
-        return $this->getProjectDir().'/var/build/'.$this->environment;
-    }
+//    public function getBuildDir(): string
+//    {
+//        return $this->getProjectDir().'/var/build/'.$this->environment;
+//    }
 
     protected function logToStderr(string $message): void
     {
