@@ -11,6 +11,8 @@
 
 namespace App;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Bref\SymfonyBridge\BrefKernel;
@@ -48,5 +50,18 @@ class Kernel extends BrefKernel
     public function getWritableCacheDirectories(): array
     {
         return ['pools'];
+    }
+
+    public function getBuildDir(): string
+    {
+        return $this->getProjectDir().'/var/build/'.$this->environment;
+    }
+
+    protected function logToStderr(string $message): void
+    {
+        $log = new Logger('name');
+        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
+
+        $log->warning($message);
     }
 }
