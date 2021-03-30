@@ -57,11 +57,11 @@ class Kernel extends BrefKernel
 //        return $this->getProjectDir().'/var/build/'.$this->environment;
 //    }
 
-    protected function logToStderr(string $message): void
-    {
-        $log = new Logger('name');
-        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
-
-        $log->warning($message);
-    }
+//    protected function logToStderr(string $message): void
+//    {
+//        $log = new Logger('name');
+//        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
+//
+//        $log->warning($message);
+//    }
 }
