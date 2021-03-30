@@ -52,8 +52,9 @@ class Kernel extends BrefKernel
     {
         $this->logToStderr('Boot !');
         $this->logToStderr($this->getCacheDir());
-        $this->logToStderr($this->isLambda());
-        $this->logToStderr(!is_dir($this->getCacheDir()));
+        $this->logToStderr($this->isLambda() ? 'true' : 'false');
+        $this->logToStderr(!is_dir($this->getCacheDir()) ? 'true' : 'false');
+        $this->logToStderr(($this->isLambda() && ! is_dir($this->getCacheDir())) ? 'true' : 'false');
         parent::boot();
     }
 
