@@ -50,7 +50,7 @@ class Kernel extends BrefKernel
 
     public function boot()
     {
-        $this->logToStderr(scandir($this->getCacheDir()));
+        $this->logToStderr(json_encode((scandir($this->getCacheDir()))));
         $this->logToStderr('Boot !');
         $this->logToStderr($this->getCacheDir());
         $this->logToStderr($this->isLambda() ? 'true' : 'false');
