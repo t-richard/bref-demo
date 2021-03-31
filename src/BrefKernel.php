@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -136,9 +134,6 @@ abstract class BrefKernel extends Kernel
      */
     protected function logToStderr(string $message): void
     {
-        $log = new Logger('name');
-        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
-
-        $log->warning($message);
+        file_put_contents('php://stderr', date('[c] ') . $message . PHP_EOL, FILE_APPEND);
     }
 }
