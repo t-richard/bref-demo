@@ -11,12 +11,13 @@
 
 namespace App;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-class Kernel extends BaseKernel
+class Kernel extends BrefKernel
 {
     use MicroKernelTrait;
 
@@ -44,4 +45,22 @@ class Kernel extends BaseKernel
             (require $path)($routes->withPath($path), $this);
         }
     }
+
+    public function getWritableCacheDirectories(): array
+    {
+        return ['pools'];
+    }
+
+//    public function getBuildDir(): string
+//    {
+//        return $this->getProjectDir().'/var/build/'.$this->environment;
+//    }
+
+//    protected function logToStderr(string $message): void
+//    {
+//        $log = new Logger('name');
+//        $log->pushHandler(new StreamHandler('php://stderr', Logger::WARNING));
+//
+//        $log->warning($message);
+//    }
 }

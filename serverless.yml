@@ -1,0 +1,64 @@
+service: bref-demo-symfony
+
+provider:
+    name: aws
+    region: eu-west-1
+    runtime: provided.al2
+#    profile: bref
+    environment:
+        # Symfony environment variables
+        APP_ENV: prod
+        S3_BASE_PATH: !GetAtt PublicAssets.RegionalDomainName
+        DATABASE_URL: ${env:DATABASE_URL}
+
+plugins:
+    - ./vendor/bref/bref
+    - ./vendor/bref/extra-php-extensions
+
+package:
+    exclude:
+        - node_modules/**
+        - tests/**
+        - var/**
+    include:
+        - var/cache/prod/**
+        - var/build/prod/**
+
+functions:
+    website:
+        handler: public/index.php
+        timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
+        layers:
+            - ${bref:layer.php-74-fpm}
+        events:
+            - httpApi: '*'
+    console:
+        handler: bin/console
+        timeout: 120 # in seconds
+        layers:
+            - ${bref:layer.php-74} # PHP
+            - ${bref:layer.console} # The "console" layer
+
+resources:
+    Resources:
+        PublicAssets:
+            Type: "AWS::S3::Bucket"
+            Properties:
+                BucketName: !Sub ${AWS::StackName}-assets
+                AccessControl: PublicRead
+                CorsConfiguration:
+                    CorsRules:
+                        - AllowedMethods: [GET]
+                          AllowedOrigins: ['*']
+                          AllowedHeaders: ['*']
+        PublicAssetsPolicy:
+            Type: AWS::S3::BucketPolicy
+            Properties:
+                Bucket: !Ref PublicAssets
+                PolicyDocument:
+                    Statement:
+                        - Effect: Allow
+                          Principal: "*"
+                          Action:
+                              - "s3:GetObject"
+                          Resource: !Join [ '', [ !GetAtt PublicAssets.Arn, /* ] ]

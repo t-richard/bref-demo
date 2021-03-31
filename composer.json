@@ -1,7 +1,7 @@
 {
     "license": "proprietary",
     "type": "project",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "replace": {
         "symfony/polyfill-php70": "*",
@@ -10,6 +10,9 @@
     "require": {
         "php": "^7.4",
         "ext-pdo_pgsql": "*",
+        "bref/bref": "^1.2",
+        "bref/extra-php-extensions": "^0.10.7",
+        "bref/symfony-bridge": "^0.1.0",
         "composer/package-versions-deprecated": "^1.8",
         "doctrine/doctrine-bundle": "^1.12|^2.0",
         "doctrine/doctrine-migrations-bundle": "^3.0",

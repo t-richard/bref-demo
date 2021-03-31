@@ -1,0 +1,49 @@
+name: Deploy master branch
+
+on:
+  push:
+    branches:
+      - current-bridge
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+      - uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "--prefer-dist --optimize-autoloader --no-dev --classmap-authoritative"
+        env:
+          APP_ENV: prod
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: encore production
+        env:
+          S3_BASE_PATH: https://bref-demo-symfony-current-assets.s3.eu-west-1.amazonaws.com
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete --exclude index.php
+        env:
+          AWS_S3_BUCKET: bref-demo-symfony-current-assets
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'eu-west-1'
+          SOURCE_DIR: 'public'
+      - name: serverless deploy
+        uses: serverless/github-action@master
+        with:
+          args: deploy --stage=current
+        env:
+          #SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+          # or if using AWS credentials directly
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
