@@ -15,10 +15,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Bref\SymfonyBridge\BrefKernel;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class Kernel extends BrefKernel
